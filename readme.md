@@ -1,6 +1,3 @@
-![picture](./public_html/wp-content/themes/batiste-default/assets/images/facebook-share.png)
-# Batiste
-
 ## Requirements
 
 Your database **should** be the exact copy of the production.
