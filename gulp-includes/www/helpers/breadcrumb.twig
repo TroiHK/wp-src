@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ *
+ * Available variables
+ * - project_name
+ * - css_files
+ * - css_url
+ * - js_url
+ * - favicon_url
+ * - img_url
+ * - lang_code
+ * - favicon_color
+ *
+ */
+#}
+
+<p id="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="http://my-website-url.com/" itemprop="url" title="Go to homepage">
+            <span itemprop="title">Home</span>
+        </a>
+        /
+        <span itemprop="child" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="http://my-website-url.com/whatever-archive-category-page/" itemprop="url">
+                <span itemprop="title">Archive or category page</span>
+            </a>
+            /
+            <span itemprop="child" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="http://my-website-url.com/whatever-archive-category-page/subpage" itemprop="url">
+                    <span itemprop="title">Single page</span>
+                </a>
+            </span>
+        </span>
+    </span>
+</p>
