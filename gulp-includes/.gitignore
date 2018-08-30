@@ -52,6 +52,7 @@ DocProject/Help/html
 *.dotCover
 _TeamCity*
 *.cachefile
+*.remote-sync.json
 public_html/.htaccess
 public_html/wp-config.php
 public_html/wp-content/uploads/
@@ -67,4 +68,5 @@ public_html/*.txt
 !public_html/robots.txt
 public_html/*.html
 public_html/wp-content/languages
-public_html/wp-content/plugins
+public_html/wp-content/plugins/*
+!public_html/wp-content/plugins/advanced-custom-fields-pro/

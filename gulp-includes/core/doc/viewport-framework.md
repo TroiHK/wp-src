@@ -1,19 +1,25 @@
-# Built-in JavaScript viewport informations (gulp_display)
+# Plugin: Built-in JavaScript viewport informations (gulp_display)
 
-Example in : */gulp-includes/js/example.js*
+### Installation
+
+Set the enable option to `true` in *gulp-includes/js/my-file.js* :
 
 ```js
-console.log(gulp_display);
+plugins: {
+    gulp_display: true
+}
 ```
 
 ### Get current viewport informations.
 
+Example in : *gulp-includes/js/includes/example.js*
+
 ```js
+console.log(gulp_display);
 var height = gulp_display.getHeight();
 var width = gulp_display.getWidth();
 var scrollY = gulp_display.getScrollY();
 var scrollX = gulp_display.getScrollX();
-var breakpoint = gulp_display.getBreakpoint();
 var orientation = gulp_display.getOrientation();
 ```
 
@@ -39,10 +45,6 @@ Returns horizontal scroll position of the viewport. (Like window.scrollX, but cr
 
 Returns the device orientation : 'portrait', 'landscape' or 'square'.
 
-`gulp_display.breakpoint`
-
-Returns the current horizontal breakpoint.
-
 ### Get previous viewport informations (after resize).
 
 `gulp_display.widthOrigin`
@@ -57,10 +59,6 @@ Returns the previous height of the viewport (in pixels).
 
 Returns the previous device orientation : 'portrait', 'landscape' or 'square'.
 
-`gulp_display.breakpointOrigin`
-
-Returns the previous horizontal breakpoint.
-
 ### Get previous viewport informations (after scroll).
 
 `gulp_display.scrollYOrigin`
@@ -71,20 +69,16 @@ Returns the previous vertical scroll position of the viewport.
 
 Returns the previous horizontal scroll position of the viewport.
 
-### Miscellaneous
-
-`gulp_display.breakpoints`
-
-Available horizontal breakpoints.
-
 # Summary
 
 - [Getting Started](./readme.md)
 - [Available Gulp commands](./gulp-commands.md)
 - [Use external libraries with Yarn](./external-libraries.md)
+- [SCSS custom functions, mixins, image dimensions, inline assets](./scss-functions.md)
 - [SCSS lint - How to bypass gulp check-scss warnings](./scss-lint.md)
 - [JSHint - How to bypass gulp check-js warnings](./jshint.md)
 - [Modernizr features detection](./modernizr.md)
-- [Built-in JavaScript viewport informations (gulp_display)](./viewport-framework.md)
-- [Responsive image Plugin](./responsive-image-plugin.md)
+- [Plugin: Responsive/Retina/Lazyload image](./responsive-image-plugin.md)
+- [Plugin: Lazyload Iframe](./lazyload-iframe.md)
+- [Plugin: Detect New Html Elements](./detect-new-html-elements.md)
 - [CMS/Framework Integration](./cms-framework.md)

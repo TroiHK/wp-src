@@ -10,7 +10,7 @@
     'use strict';
 
     $(document).ready(function () {
-        console.log('DOM is ready! JS\'s running ?? Load time : ' + (parseInt(Date.now()) - parseInt(gulp_timer)) + 'ms.');
+        console.log('DOM is ready! JS\'s running 🚀 Load time : ' + (parseInt(Date.now()) - parseInt(gulp_timer)) + 'ms.');
     });
     $(window).on(
         {

@@ -83,27 +83,9 @@ umask( 0022 );
 
 #### Install plugins
 
-- `php wp-cli.phar plugin install advanced-custom-fields --version=5.6.9 --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install acf-content-analysis-for-yoast-seo --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install advanced-access-manager --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install disable-comments --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install disable-json-api --activate --path=./public_html/ --allow-root`
+- `php wp-cli.phar plugin install advanced-custom-fields --version=5.6.9 --activate --path=./public_html/ --allow-root` replaced by `ACF pro`
 - `php wp-cli.phar plugin install wordpress-seo --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install wp-smushit --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install all-in-one-wp-security-and-firewall --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install post-types-order --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install custom-settings --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install wp-crontrol --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install contact-form-7 --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install flamingo --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install relevanssi --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install simple-301-redirects --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install svg-support --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install duracelltomi-google-tag-manager --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install wp-optimize --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install clean-image-filenames --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install wp-super-cache --activate --path=./public_html/ --allow-root`
-- `php wp-cli.phar plugin install inazo-flamingo-automatically-delete-old-messages --activate --path=./public_html/ --allow-root`
+- `php wp-cli.phar plugin install $(<plugin-slugs.txt) --path=./public_html/ --allow-root`
 
 #### Install WP-CLI Packages
 
@@ -135,17 +117,6 @@ Download latest medias (from remote server using FTP client for example). *publi
 
 - Visit *http://website.com/wp-admin/options-permalink.php* and change permalink structure then revent to %postname%. This will regenerate the .htaccess file.
 
-- Visit *http://website.com/wp-admin/admin.php?page=aiowpsec_filesystem&tab=tab3* uncheck, save, check, save. This will update the .htaccess file.
-
-- Visit *http://website.com/wp-admin/admin.php?page=aiowpsec_filesystem* and check if there's no recommended action to perform.
-
-#### Cache flush
-
-- `php wp-cli.phar cache flush --path=./public_html/ --allow-root`
-- `php wp-cli.phar super-cache flush --path=./public_html/ --allow-root`
-
-:+1::rocket::+1::rocket::+1::rocket::+1::rocket::+1::rocket::+1::rocket::+1:
-
 # Maintenance
 
 **Update outdated NPM dependencies :**
@@ -175,3 +146,49 @@ Download latest medias (from remote server using FTP client for example). *publi
 **Regenerate missing images sizes :**
 
 `php wp-cli.phar media regenerate --skip-delete --only-missing --yes --path=./public_html/ --allow-root`
+
+
+## Deploys Documentation
+
+#### Init Git
+
+Connect the root folder of site and using command line :
+
+- `git init`
+- `git remote add origin GIT_URL_HERE`
+
+#### Export/Import database
+
+Export database [here](staging-site)
+- Browser login: user/pass
+- Admin login: user/pass
+- Replace URL and file path(http://prntscr.com/kisd9i)
+
+Import using command line :
+- Import : `mysql -u` USER `-p ` DB_NAME `< export-database.sql`
+
+#### Install WordPress files
+
+- `php wp-cli.phar core download --path=./public_html/ --locale=fr_FR --version=latest --skip-content --allow-root`
+
+#### Generate configuration file
+
+- `php wp-cli.phar config create --dbname=`YOUR_DB_NAME `--dbuser=`YOUR_DB_USER `--dbhost=`YOUR_DB_HOST `--dbprefix=apf_ --skip-check --path=./public_html/ --prompt=dbpass --allow-root`
+
+#### Add the following code at the BEGINNING of `public_html/wp-config.php` :
+
+```php
+umask( 0022 );
+```
+
+#### Install plugins
+
+- `php wp-cli.phar plugin install $(<plugin-slugs.txt) --path=./public_html/ --allow-root`
+
+#### Extract wp-content files
+
+Connect the root folder of site, then go to the `public_html/wp-content`  and extract `wp-content.zip` file.
+
+#### Update the permalink
+
+Go to your-site.com/wp-admin/options-permalink.php(user/pass) and click `Enregistrer les modifications`.

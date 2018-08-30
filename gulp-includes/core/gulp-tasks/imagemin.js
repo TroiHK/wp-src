@@ -1,59 +1,73 @@
 /*
  * @file
  *
- * - gulp imagemin
+ * - gulp imagemin [--lossless]
  *
- * Optimise .jpg .jpeg .png .gif .svg images.
+ * Optimises .jpg .jpeg .png .gif .svg images.
  *
  */
 
-const pump = require('pump'),
-    imagemin = require('gulp-imagemin'),
-    config = require('../../gulp-configuration.js'),
-    gulp = require('gulp'),
+const image = require('../lib/image'),
+    config = require('../../gulp-configuration'),
+    rls = require('remove-leading-slash'),
     upath = require('upath'),
-    plumber = require('gulp-plumber'),
-    chmod = require('gulp-chmod'),
-    rls = require('remove-leading-slash');
+    glob = require('glob'),
+    log = require('../lib/log'),
+    prompt = require('prompt'),
+    os = require('os'),
+    events = require('events'),
+    argv = require('minimist')(process.argv.slice(2));
 
 module.exports = function (done) {
-    pump([
-             gulp.src([
-                          rls(upath.join(rls(config.generateImages.folder), '**', '*.gif')),
-                          rls(upath.join(rls(config.generateImages.folder), '**', '*.png')),
-                          rls(upath.join(rls(config.generateImages.folder), '**', '*.jpg')),
-                          rls(upath.join(rls(config.generateImages.folder), '**', '*.jpeg')),
-                          rls(upath.join(rls(config.generateImages.folder), '**', '*.svg'))
-                      ]),
-             plumber(),
-             imagemin([
-                          imagemin.gifsicle({ interlaced : true, optimizationLevel : 3 }),
-                          imagemin.jpegtran({ progressive : false }),
-                          imagemin.optipng({ optimizationLevel : 7 }),
-                          imagemin.svgo({ plugins : [{ removeViewBox : false }, { removeUselessStrokeAndFill : false }] })
-                      ]),
-             chmod(
-                 {
-                     owner : {
-                         read : true,
-                         write : true,
-                         execute : true
-                     },
-                     group : {
-                         read : true,
-                         write : false,
-                         execute : true
-                     },
-                     others : {
-                         read : true,
-                         write : false,
-                         execute : true
-                     }
-                 }
-             ),
-             plumber.stop(),
-             gulp.dest(rls(config.generateImages.folder))
-         ], function () {
-        done();
+    log.info('You should also use https://kraken.io/web-interface, an ounce of prevention is worth a pound of cure.');
+    var lossless = false;
+    if (argv.lossless) {
+        lossless = true;
+    } else {
+        log.info('Notice : Consider using the --lossless option.');
+    }
+    var schema = {
+        properties : {
+            'yes/no' : {
+                pattern : /^yes|no|y|n|YES|NO|Y|N+$/,
+                type : 'string',
+                message : 'We didn\'t understand your answer.',
+                required : true
+            }
+        }
+    };
+    log.info('Every image (jpg, jpeg, png, gif, webp, svg) located in "' + rls(config.generateImages.folder) + '" will be minified.');
+    log.info('Do you want to continue?');
+    prompt.start();
+    prompt.get(schema, function (err, result) {
+        if (err) {
+            console.log(os.EOL);
+            log.error(err);
+            console.log(os.EOL);
+        } else {
+            if (result['yes/no'].match(/^yes|y|YES|Y+$/) != null) {
+                var imagesArray = [];
+                var imagesFiles = glob.sync(rls(upath.join(rls(config.generateImages.folder), '**', '*.{jpg,png,jpeg,gif,webp,svg}')));
+                imagesFiles.forEach(function (file) {
+                    imagesArray.push(file);
+                });
+
+                var imagesArrayDuplicate = imagesArray;
+                const eventEmitter = new events.EventEmitter();
+                eventEmitter.on('finished', function (file) {
+                    imagesArrayDuplicate.splice(imagesArrayDuplicate.indexOf(file), 1);
+                    if (imagesArrayDuplicate.length == 0) {
+                        done();
+                        prompt.stop();
+                    }
+                });
+                imagesArray.forEach(function (file) {
+                    image.minify(file, true, lossless, eventEmitter);
+                });
+            } else {
+                done();
+                prompt.stop();
+            }
+        }
     });
 };

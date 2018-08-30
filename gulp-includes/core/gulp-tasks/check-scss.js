@@ -7,10 +7,10 @@
  *
  */
 
-const check = require('./lib/check-scss');
+const css = require('../lib/css');
 
 module.exports = function (done) {
-    check.check(true, function (success) {
+    css.check(true, function (success) {
         done();
     });
 };

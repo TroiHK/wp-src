@@ -3,15 +3,14 @@
  *
  * - gulp clean
  *
- * Erase generated assets.
+ * Erases generated assets.
  *
  */
 
-const clean = require('./lib/clean');
+const clean = require('../lib/clean');
 
 module.exports = function (done) {
-    clean.clean(true, function (success) {
+    clean.clean(function (success) {
         done();
-        process.exit();
     });
 };

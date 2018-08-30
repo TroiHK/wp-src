@@ -1,19 +1,18 @@
 /*
  * @file
  *
- * - gulp [--dev] [--nojquery]
- * - gulp watch [--dev] [--reload] [--nojquery]
+ * - gulp [--dev]
+ * - gulp watch [--dev] [--reload]
  *
- * - gulp css  [--dev]
+ * - gulp css [--dev]
  * - gulp favicon
- * - gulp html
+ * - gulp html [--dev]
  * - gulp check-js
  * - gulp check-scss
- * - gulp javascript [--dev] [--nojquery]
- * - gulp imagemin
+ * - gulp javascript [--dev]
+ * - gulp imagemin [--lossless]
  * - gulp gitignore
  * - gulp clean
- * - gulp wordpressify
  *
  */
 
@@ -25,8 +24,10 @@ const config = {
     ###########################################
     */
 
-    /* This is important for favicon generation */
     project_name: "Project's name",
+
+    /* This is important for favicon generation, it should be fewer than 12 characters */
+    project_short_name: "Project",
 
     /* This is important for favicon generation */
     /* Simply fill in your app's default language code. Please respect the syntax. */
@@ -36,6 +37,29 @@ const config = {
     /* Root folder of your application, CMS, framework... */
     project_root_directory: '/',
 
+    /* Url of the git/gitlab repository of the project */
+    /* Example : https://git.fidesio.com/fidesio/frontend-boilerplate */
+    project_git_url: '',
+
+    // project_preview_url: 'https://projects.preview.team/project/4763/issues/kanban',
+    /* Urls related to the project from https://preview.team/ */
+    project_preview_links: {
+        // 'tickets': 'https://projects.preview.team/project/4763/issues/kanban',
+        // 'wiki': 'https://projects.preview.team/project/4763/wiki'
+    },
+
+    /* Various external links related to the project */
+    project_other_links: {
+        // 'staging': 'http://client.project.staging.fides.io/',
+        // 'preprod': 'https://preprod.project.com/',
+        // 'production': 'https://project.com/',
+        // 'other custom link': 'http://other-link.com/'
+    },
+
+    /* Do not change this value unless you know what you are doing.  */
+    /* Will be documented soon™ */
+    extension_mode: false,
+
     /*
     ###########################################
     ######### JAVASCRIPT CONFIGURATION ########
@@ -44,32 +68,7 @@ const config = {
 
     generateJs: {
         /* Enable or disable Javascript compilation */
-        enable: true,
-
-        /* Compiled JS file name */
-        output_name: 'main',
-
-        /* Compiled JS file destination */
-        output_path: '/public_html/wp-content/themes/wp-athena/assets/js/',
-
-        /* Path to external libs (e.g. sliders, modals ...). Most likely node_modules stuffs */
-        src: [
-            // 'node_modules/slick-carousel/slick/slick.js',
-            // '/node_modules/magnific-popup/dist/jquery.magnific-popup.js'
-        ],
-
-        /* Modernizr will be included in the bundle if feature-detects is filled. */
-        modernizr: {
-
-            /* https://modernizr.com/download?video-videoloop */
-            'feature-detects': [
-                // "test/video",
-                // "test/video/loop"
-            ],
-
-            /* Add classes in <html> tag ? */
-            'add-classes-in-html-tag': false
-        }
+        enable: true
     },
 
     /*
@@ -80,10 +79,7 @@ const config = {
 
     generateCss: {
         /* Enable or disable Css compilation */
-        enable: true,
-
-        /* Compiled CSS file destination */
-        output_path: '/public_html/wp-content/themes/wp-athena/assets/css/'
+        enable: true
     },
 
     /*
@@ -96,8 +92,17 @@ const config = {
         /* Enable or disable Html compilation */
         enable: true,
 
-        /* Compiled HTML files destination */
-        output: '/public_html/'
+        /* Enable generation of the project presentation page (index.html) */
+        /* if enable is set to false then enable_index will be false. */
+        enable_index: true,
+
+        /* Enable or disable browserSync when gulp watch is called */
+        browsersync: true,
+
+        /* Default compiled HTML files destination. */
+        /* When setting {% set output_path = 'folder/file.html' %} in your twig file, result is : */
+        /* public/folder/file.html */
+        output: 'public_html/html/'
     },
 
     /*
@@ -108,7 +113,7 @@ const config = {
 
     generateGitignore: {
         /* Enable or disable .gitignore compilation */
-        enable: true
+        enable: false
     },
 
     /*
@@ -119,7 +124,7 @@ const config = {
 
     generateImages: {
         /* Images folder for gulp imagemin task */
-        folder: '/public_html/wp-content/themes/wp-athena/assets/images/'
+        folder: 'public_html/wp-content/themes/wp-athena/assets/images/'
     },
 
     /*
@@ -130,25 +135,13 @@ const config = {
 
     generateFavicon: {
         /* Compiled favicon destination */
-        output: '/public_html/wp-content/themes/wp-athena/assets/images/favicon/',
+        output: 'public_html/wp-content/themes/wp-athena/assets/images/favicon/',
 
         /* Favicon source */
-        src: '/public_html/wp-content/themes/wp-athena/assets/images/favicon.png',
+        src: 'public_html/wp-content/themes/wp-athena/assets/images/favicon.png',
 
         /* Main color used for iOS/Android's UI  */
         main_color: '#ffffff'
-    },
-
-    /*
-    ###########################################
-    ########## PLUGINS CONFIGURATION ##########
-    ###########################################
-    */
-
-    plugins: {
-        responsiveImage: {
-            enable: false
-        }
     }
 };
 
